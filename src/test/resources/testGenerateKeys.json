@@ -1,6 +1,14 @@
 [
   {
-    "dimensionValues": ["中国","浙江","舟山"],
+    "dimensionValues": ["中国"],
     "expected": "testGenerateKeys_1.json"
+  },
+  {
+    "dimensionValues": ["中国","浙江"],
+    "expected": "testGenerateKeys_2.json"
+  },
+  {
+    "dimensionValues": ["中国","浙江","舟山"],
+    "expected": "testGenerateKeys_3.json"
   }
 ]

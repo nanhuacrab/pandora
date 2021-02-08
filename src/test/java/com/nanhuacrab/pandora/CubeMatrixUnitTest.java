@@ -29,7 +29,7 @@ public class CubeMatrixUnitTest {
     for (TestGenerateKeysConfiguration configuration : configurations) {
 
       CubeMatries cubeMatries = new CubeMatries();
-      CubeMatrix cubeMatrix = cubeMatries.cubeMatrx(3);
+      CubeMatrix cubeMatrix = cubeMatries.cubeMatrx(configuration.dimensionValues.length);
       String[] keys = cubeMatrix.generateKeys(configuration.dimensionValues);
       String actual = gson.toJson(keys);
 
