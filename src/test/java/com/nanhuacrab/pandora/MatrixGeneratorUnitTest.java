@@ -15,7 +15,8 @@ public class MatrixGeneratorUnitTest {
   @Test
   public void testGenerator() throws IOException {
     Gson gson = new Gson();
-    for (int dimensionSize = 1; dimensionSize <= 5; dimensionSize++) {
+
+    for (int dimensionSize = 1; dimensionSize <= 6; dimensionSize++) {
       MatrixGenerator matrixGenerator = new MatrixGenerator(dimensionSize);
       matrixGenerator.generate();
       int[][] matrix = matrixGenerator.orderedMatrix();
