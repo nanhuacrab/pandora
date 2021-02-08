@@ -9,6 +9,7 @@ public class Box {
   private Dimension[] dimensions;
   private MatchItem[] matchItems;
   private String description;
+  public static final String SEPARATOR = ",";
 
   public int id() {
     return this.id;

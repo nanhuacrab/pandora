@@ -10,7 +10,6 @@ public class DimensionValue {
   private final Dimension dimension;
   private final Set<String> valueSet;
   private final String[] values;
-  public static final String SEPARATOR = ",";
 
   public DimensionValue(Dimension dimension, String values, String separator) {
     this(dimension, Splitter.on(separator).splitToList(values));
