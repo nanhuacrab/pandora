@@ -1,0 +1,36 @@
+[{
+  "dimensionsSize": [1],
+  "testCases": [{
+    "dimensionsValues": [
+      ["中国"]
+    ],
+    "expected": "testKeys.1_1.expected"
+  }]
+},{
+  "dimensionsSize": [3],
+  "testCases": [{
+    "dimensionsValues": [
+      ["中国","日本","韩国"]
+    ],
+    "expected": "testKeys.3_1.expected"
+  }]
+},{
+  "dimensionsSize": [2,3],
+  "testCases": [{
+    "dimensionsValues": [
+      ["浙江","上海"],
+      ["舟山","杭州","上海"]
+    ],
+    "expected": "testKeys.2-3_1.expected"
+  }]
+},{
+  "dimensionsSize": [1,2,3],
+  "testCases": [{
+    "dimensionsValues": [
+      ["中国"],
+      ["浙江","上海"],
+      ["舟山","杭州","上海"]
+    ],
+    "expected": "testKeys.1-2-3_1.expected"
+  }]
+}]

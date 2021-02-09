@@ -1,10 +1,10 @@
 package com.nanhuacrab.pandora;
 
-import java.util.Map;
-import java.util.Set;
-
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+
+import java.util.Map;
+import java.util.Set;
 
 /**
  * 魔方
@@ -79,25 +79,31 @@ public class Box {
 
     }
 
+    @Override
     public int id() {
       return this.id;
     }
 
+    @Override
     public String description() {
       return this.description;
     }
 
-    public DimensionValue[] dimensionValue() {
-      return this.dimensionValue;
-    }
-
+    @Override
     public String configuration() {
       return this.configuration;
     }
 
-    Box box();
+    @Override
+    public Box box(){
+      return this.ownerBox;
+    }
 
-    Set<String> keys();
+    @Override
+    public Set<String> keys(){
+      return this.keys;
+    }
+
   }
 
   private final int id;
