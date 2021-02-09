@@ -29,11 +29,15 @@ public class BoxUnitTest {
     Factories4Test factories = new Factories4Test();
 
     InputStream stream = this.getClass().getClassLoader().getResourceAsStream("testMatch.json");
-    BoxUnitTest.TestMatchConfiguration[] configurations =
-        gson.fromJson(CharStreams.toString(new InputStreamReader(stream, Charsets.UTF_8)),
-            BoxUnitTest.TestMatchConfiguration[].class);
+    String[] configurations =
+        gson.fromJson(CharStreams.toString(new InputStreamReader(stream, Charsets.UTF_8)), String[].class);
 
-    for (BoxUnitTest.TestMatchConfiguration configuration : configurations) {
+    for (String c : configurations) {
+
+      stream = this.getClass().getClassLoader().getResourceAsStream(c);
+      BoxUnitTest.TestMatchConfiguration configuration =
+          gson.fromJson(CharStreams.toString(new InputStreamReader(stream, Charsets.UTF_8)),
+              BoxUnitTest.TestMatchConfiguration.class);
 
       Box box = new Box(configuration.box, factories);
       System.out
@@ -42,6 +46,8 @@ public class BoxUnitTest {
       for (TestMatchConfigurationTestCase testCase : configuration.testCases) {
         MatchItem matchedItem = box.match(testCase.dimensionsValues);
         String actual = matchedItem.configuration();
+        System.out.println("+actual");
+        System.out.println(actual);
         String expected = testCase.expected;
         Assert.assertEquals(expected, actual);
       }

@@ -1,8 +1,11 @@
 package com.nanhuacrab.pandora;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -12,45 +15,30 @@ import java.util.Set;
 public class Box {
 
   private static final class MyDimension implements Dimension {
-    private final int id;
-    private final String code;
-    private final String description;
-    private final boolean nullable;
-    private final int sequence;
     private final Box ownerBox;
+    private final DimensionDTO data;
 
     private MyDimension(DimensionDTO dimension, Box box) {
       this.ownerBox = box;
-      this.id = dimension.id();
-      this.code = dimension.code();
-      this.description = dimension.description();
-      this.nullable = dimension.nullable();
-      this.sequence = dimension.sequence();
+      this.data = dimension;
     }
 
     @Override
-    public int id() {
-      return this.id;
+    public String code(){
+      return this.data.code();
+    }
+
+    private String description() {
+      return this.data.description();
+    }
+
+    private boolean nullable(){
+      return this.data.nullable();
     }
 
     @Override
-    public String code() {
-      return this.code;
-    }
-
-    @Override
-    public String description() {
-      return this.description;
-    }
-
-    @Override
-    public boolean nullable() {
-      return this.nullable;
-    }
-
-    @Override
-    public int sequence() {
-      return this.sequence;
+    public DimensionDTO data() {
+      return this.data;
     }
 
     @Override
@@ -60,23 +48,22 @@ public class Box {
   }
 
   private static final class MyMatchItem implements MatchItem {
-    private final int id;
-    private final String description;
     // private final DimensionValue[] dimensionValue;
     private final String configuration;
     private final String[] keys;
     private final Box ownerBox;
+    private final MatchItemDTO data;
 
     public MyMatchItem(MatchItemDTO matchItem, Box box) {
       this.ownerBox = box;
-      this.id = matchItem.id();
-      this.description = matchItem.description();
+      this.data = matchItem;
+
       this.configuration = matchItem.configuration();
 
-      int[] dimensionsSize = new int[this.ownerBox.dimensions.length];
-      Set<String>[] dimensionsValues = new Set[this.ownerBox.dimensions.length];
-      for (int i = 0; i < this.ownerBox.dimensions.length; i++) {
-        String dimensionCode = this.ownerBox.dimensions[i].code();
+      int[] dimensionsSize = new int[this.ownerBox.dimensionsAll.length];
+      Set<String>[] dimensionsValues = new Set[this.ownerBox.dimensionsAll.length];
+      for (int i = 0; i < this.ownerBox.dimensionsAll.length; i++) {
+        String dimensionCode = this.ownerBox.dimensionsAll[i].code();
         Set<String> dimensionValues = matchItem.dimensionValue().get(dimensionCode);
         if (CollectionUtils.isEmpty(dimensionValues)) {
           dimensionsValues[i] = null;
@@ -87,16 +74,6 @@ public class Box {
         }
       }
       this.keys = this.ownerBox.factories.keyMatrix(dimensionsSize).keys(this.ownerBox.separator, dimensionsValues);
-    }
-
-    @Override
-    public int id() {
-      return this.id;
-    }
-
-    @Override
-    public String description() {
-      return this.description;
     }
 
     @Override
@@ -114,41 +91,59 @@ public class Box {
       return this.keys;
     }
 
+    @Override
+    public MatchItemDTO data(){
+      return this.data;
+    }
+
   }
 
-  private final int id;
-  private final String code;
-  private final Dimension[] dimensions;
+  private final Dimension[] dimensionsAll;
+  private final Dimension[] dimensionsWithNullable; // 配置可为空的维度
+  private final Dimension[] dimensionsWithNotNull; // 配置不可为空的维度
+
   private final Map<String, MyDimension> dimensionsByCode = Maps.newHashMap();
   private final MatchItem[] matchItems;
-  private final String description;
   public static final String SEPARATOR = ",";
   private final CubeMatrix cubeMatrix;
-  private final String separator;
   private final Map<String, MatchItem> matchItemWithKeys = Maps.newHashMap();
   private final Factories factories;
+  private final BoxDTO data;
+  private final String code;
+  private final String separator;
 
   public Box(BoxDTO box, Factories factories) {
 
     this.factories = factories;
-    this.id = box.id();
+    this.data = box;
     this.code = box.code();
-    this.description = box.description();
     this.separator = box.separator();
 
-    this.dimensions = new Dimension[box.dimensions().length];
-    for (int i = 0; i < this.dimensions.length; i++) {
+    int dimensionsSize = box.dimensions().length;
+    List<Dimension> dimensionsWithNullable = Lists.newArrayListWithCapacity(dimensionsSize);
+    List<Dimension> dimensionsWithNotNull = Lists.newArrayListWithCapacity(dimensionsSize);
+    this.dimensionsAll = new Dimension[box.dimensions().length];
+    for (int i = 0; i < dimensionsSize; i++) {
       MyDimension dimension = new MyDimension(box.dimensions()[i], this);
-      this.dimensions[i] = dimension;
-      this.dimensionsByCode.put(dimension.code, dimension);
+      if(dimension.nullable()) {
+        dimensionsWithNullable.add(dimension);
+      }else{
+        dimensionsWithNotNull.add(dimension);
+      }
+      this.dimensionsByCode.put(dimension.code(), dimension);
     }
+    this.dimensionsWithNullable = dimensionsWithNullable.stream().toArray(Dimension[]::new);
+    this.dimensionsWithNotNull = dimensionsWithNotNull.stream().toArray(Dimension[]::new);
+
+    System.arraycopy(this.dimensionsWithNotNull,0,this.dimensionsAll,0,this.dimensionsWithNotNull.length);
+    System.arraycopy(this.dimensionsWithNullable,0,this.dimensionsAll,this.dimensionsWithNotNull.length,this.dimensionsWithNullable.length);
 
     this.matchItems = new MatchItem[box.matchItems().length];
     for (int i = 0; i < this.matchItems.length; i++) {
       this.matchItems[i] = new MyMatchItem(box.matchItems()[i], this);
     }
 
-    this.cubeMatrix = this.factories.cubeMatrix(this.dimensions.length);
+    this.cubeMatrix = this.factories.cubeMatrix(this.dimensionsWithNullable.length);
 
     for (MatchItem matchItem : this.matchItems) {
       for (String key : matchItem.keys()) {
@@ -157,20 +152,16 @@ public class Box {
     }
   }
 
-  public int id() {
-    return this.id;
-  }
-
   public String code() {
     return this.code;
   }
 
   public String description() {
-    return this.description;
+    return this.data.description();
   }
 
   public Dimension[] dimensions() {
-    return this.dimensions;
+    return this.dimensionsAll;
   }
 
   public MatchItem[] matchItems() {
@@ -178,13 +169,18 @@ public class Box {
   }
 
   public MatchItem match(Map<String, String> dimensionValues) {
-    if (dimensionValues.size() != this.dimensions.length) {
-      return null;
+
+    String prefix = StringUtils.EMPTY;
+    for (Dimension dimension : this.dimensionsWithNotNull) {
+      if (!dimensionValues.containsKey(dimension.code())) {
+        return null;
+      }
+      prefix += dimensionValues.get(dimension.code()) + this.separator;
     }
 
-    String[] values = new String[this.dimensions.length];
-    for (int i = 0; i < this.dimensions.length; i++) {
-      Dimension dimension = this.dimensions[i];
+    String[] values = new String[this.dimensionsWithNullable.length];
+    for (int i = 0; i < this.dimensionsWithNullable.length; i++) {
+      Dimension dimension = this.dimensionsWithNullable[i];
       if (!dimensionValues.containsKey(dimension.code())) {
         return null;
       }
@@ -194,8 +190,9 @@ public class Box {
     String[] keys = this.cubeMatrix.generateKeys(values, this.separator);
 
     for (String key : keys) {
-      if (this.matchItemWithKeys.containsKey(key)) {
-        return this.matchItemWithKeys.get(key);
+      String keyWithPrefix = prefix+key;
+      if (this.matchItemWithKeys.containsKey(keyWithPrefix)) {
+        return this.matchItemWithKeys.get(keyWithPrefix);
       }
     }
 

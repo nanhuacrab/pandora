@@ -5,13 +5,11 @@ package com.nanhuacrab.pandora;
  */
 public interface MatchItem {
 
-  int id();
-
-  String description();
-
   String configuration();
 
   Box box();
 
   String[] keys();
+
+  MatchItemDTO data();
 }

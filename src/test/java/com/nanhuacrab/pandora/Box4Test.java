@@ -4,15 +4,9 @@ public class Box4Test implements BoxDTO {
 
   private DimensionDTO4Test[] dimensions;
   private MatchItemDTO4Test[] matchItems;
-  private int id;
   private String code;
   private String description;
   private String separator;
-
-  @Override
-  public int id() {
-    return this.id;
-  }
 
   @Override
   public String code() {

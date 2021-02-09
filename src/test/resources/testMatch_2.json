@@ -1,0 +1,60 @@
+{
+  "box":{
+    "code": "配置场景2 维度【国家】配置不可为空",
+    "description": "",
+    "separator": "_",
+    "dimensions": [
+      {
+      "code": "省",
+      "description": "",
+      "nullable": true
+    },{
+        "code": "国家",
+        "description": "",
+        "nullable": false
+      },{
+      "code": "城市",
+      "description": "",
+      "nullable": true
+    }],
+    "matchItems": [
+      {
+      "description": "",
+      "configuration": "I love Shanghai",
+      "dimensionValue": {
+        "国家": ["中国"],
+        "城市": ["上海"]
+      }
+    },{
+      "description": "",
+      "configuration": "Taiwan belongs to China",
+      "dimensionValue": {
+        "国家": ["中国"],
+        "省": ["台湾"]
+      }
+    },{
+      "description": "",
+      "configuration": "I love China",
+      "dimensionValue": {
+        "国家": ["中国"],
+        "城市": ["香港","澳门"]
+      }
+    },{
+      "description": "",
+      "configuration": "I love here",
+      "dimensionValue": {
+        "国家": ["中国"]
+      }
+    }]
+  },
+  "testCases": [
+    {
+      "dimensionsValues":
+      {
+        "国家":"中国",
+        "省":"北京",
+        "城市":"北京"
+      },
+      "expected": "I love here"
+    }]
+}
