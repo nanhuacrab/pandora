@@ -35,5 +35,5 @@ public interface Box {
   /**
    * 检查是否有重复 key 的配置项
    * */
-  Map<String, List<MatchItem>> checkDuplicationMatchItem();
+  Map<String, List<MatchItem>> checkDuplicationMatchItems();
 }

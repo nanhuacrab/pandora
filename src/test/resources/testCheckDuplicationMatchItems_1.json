@@ -1,0 +1,58 @@
+{
+  "box":{
+    "code": "配置场景1 所有维度配置可为空",
+    "description": "",
+    "separator": "_",
+    "dimensions": [
+      {
+        "code": "国家",
+        "description": "",
+        "nullable": true
+      },{
+        "code": "省",
+        "description": "",
+        "nullable": true
+      },{
+        "code": "城市",
+        "description": "",
+        "nullable": true
+      }],
+    "matchItems": [
+      {
+        "description": "",
+        "configuration": "I love Shanghai",
+        "dimensionValue": {
+          "国家": ["中国"],
+          "城市": ["上海"]
+        }
+      },{
+        "description": "",
+        "configuration": "Taiwan belongs to China",
+        "dimensionValue": {
+          "国家": ["中国"],
+          "省": ["台湾"]
+        }
+      },{
+        "description": "",
+        "configuration": "I love China",
+        "dimensionValue": {
+          "国家": ["中国"],
+          "城市": ["香港","澳门"]
+        }
+      },{
+        "description": "",
+        "configuration": "I love here",
+        "dimensionValue": {
+          "国家": ["中国"]
+        }
+      },{
+        "description": "",
+        "configuration": "I love here",
+        "dimensionValue": {
+          "国家": ["中国","日本"],
+          "城市": ["香港","澳门"]
+        }
+      }]
+  },
+  "expected":"testCheckDuplicationMatchItems_1.expected"
+}

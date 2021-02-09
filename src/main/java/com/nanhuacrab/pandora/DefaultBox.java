@@ -211,7 +211,7 @@ public class DefaultBox implements Box {
   }
 
   @Override
-  public Map<String, List<MatchItem>> checkDuplicationMatchItem() {
+  public Map<String, List<MatchItem>> checkDuplicationMatchItems() {
     Map<String, List<MatchItem>> duplicationMatchItems = Maps.newHashMap();
 
     for (MatchItem matchItem : this.matchItems) {
