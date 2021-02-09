@@ -1,7 +1,7 @@
 package com.nanhuacrab.pandora;
 
 import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
+import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.Map;
 import java.util.Set;
@@ -64,7 +64,7 @@ public class Box {
     private final String description;
     // private final DimensionValue[] dimensionValue;
     private final String configuration;
-    private final Set<String> keys = Sets.newHashSet();
+    private final String[] keys;
     private final Box ownerBox;
 
     public MyMatchItem(MatchItemDTO matchItem, Box box) {
@@ -73,10 +73,20 @@ public class Box {
       this.description = matchItem.description();
       this.configuration = matchItem.configuration();
 
+      int[] dimensionsSize = new int[this.ownerBox.dimensions.length];
+      Set<String>[] dimensionsValues = new Set[this.ownerBox.dimensions.length];
       for (int i = 0; i < this.ownerBox.dimensions.length; i++) {
-
+        String dimensionCode = this.ownerBox.dimensions[i].code();
+        Set<String> dimensionValues = matchItem.dimensionValue().get(dimensionCode);
+        if (CollectionUtils.isEmpty(dimensionValues)) {
+          dimensionsValues[i] = null;
+          dimensionsSize[i] = 0;
+        } else {
+          dimensionsValues[i] = dimensionValues;
+          dimensionsSize[i] = dimensionValues.size();
+        }
       }
-
+      this.keys = this.ownerBox.factories.keyMatrix(dimensionsSize).keys(this.ownerBox.separator, dimensionsValues);
     }
 
     @Override
@@ -95,12 +105,12 @@ public class Box {
     }
 
     @Override
-    public Box box(){
+    public Box box() {
       return this.ownerBox;
     }
 
     @Override
-    public Set<String> keys(){
+    public String[] keys() {
       return this.keys;
     }
 
@@ -118,33 +128,33 @@ public class Box {
   private final Map<String, MatchItem> matchItemWithKeys = Maps.newHashMap();
   private final Factories factories;
 
-  public Box(int id, String code, String description, DimensionDTO[] dimensions, MatchItemDTO[] matchItems,
-      Factories factories) {
-    this(id, code, description, dimensions, matchItems, SEPARATOR, factories);
-  }
+  public Box(BoxDTO box, Factories factories) {
 
-  public Box(int id, String code, String description, DimensionDTO[] dimensions, MatchItemDTO[] matchItems,
-      String separator, Factories factories) {
-    this.id = id;
-    this.code = code;
-    this.description = description;
+    this.factories = factories;
+    this.id = box.id();
+    this.code = box.code();
+    this.description = box.description();
+    this.separator = box.separator();
 
-    this.dimensions = new Dimension[dimensions.length];
+    this.dimensions = new Dimension[box.dimensions().length];
     for (int i = 0; i < this.dimensions.length; i++) {
-      MyDimension dimension = new MyDimension(dimensions[i], this);
+      MyDimension dimension = new MyDimension(box.dimensions()[i], this);
       this.dimensions[i] = dimension;
       this.dimensionsByCode.put(dimension.code, dimension);
     }
 
-    this.matchItems = new MatchItem[matchItems.length];
+    this.matchItems = new MatchItem[box.matchItems().length];
     for (int i = 0; i < this.matchItems.length; i++) {
-      this.matchItems[i] = new MyMatchItem(matchItems[i], this);
+      this.matchItems[i] = new MyMatchItem(box.matchItems()[i], this);
     }
 
-    this.separator = separator;
-    this.factories = factories;
-
     this.cubeMatrix = this.factories.cubeMatrix(this.dimensions.length);
+
+    for (MatchItem matchItem : this.matchItems) {
+      for (String key : matchItem.keys()) {
+        this.matchItemWithKeys.put(key,matchItem);
+      }
+    }
   }
 
   public int id() {

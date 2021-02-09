@@ -1,7 +1,9 @@
 package com.nanhuacrab.pandora;
 
 import com.google.common.collect.Maps;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Map;
@@ -34,14 +36,16 @@ public class KeyMatrix {
 
   public KeyMatrix(int[] dimensionsSize) {
 
-    this.dimensionsSize = dimensionsSize;
     this.dimensionSize = dimensionsSize.length;
+    this.dimensionsSize = new int[this.dimensionSize];
 
     int matrixSize = 1;
     int symbolsSize = 0;
     for (int i = 0; i < this.dimensionSize; i++) {
-      matrixSize *= dimensionsSize[i];
-      symbolsSize += dimensionsSize[i];
+      int size = Math.max(dimensionsSize[i], 1);
+      this.dimensionsSize[i] = size;
+      matrixSize *= size;
+      symbolsSize += size;
     }
     this.matrixSize = matrixSize;
     this.symbolsSize = symbolsSize;
@@ -107,8 +111,13 @@ public class KeyMatrix {
     Map<String, String> symbolWithdimensionValues = Maps.newHashMap();
     int symbolIndex = 0;
     for (int i = 0; i < dimensionsValues.length; i++) {
+      if (CollectionUtils.isEmpty(dimensionsValues[i])) {
+        symbolWithdimensionValues.put(this.symbols[symbolIndex++], StringUtils.EMPTY);
+        continue;
+      }
       for (String dimensionsValue : dimensionsValues[i]) {
-        symbolWithdimensionValues.put(this.symbols[symbolIndex++], dimensionsValue);
+        symbolWithdimensionValues.put(this.symbols[symbolIndex++],
+            ObjectUtils.defaultIfNull(dimensionsValue, StringUtils.EMPTY));
       }
     }
 

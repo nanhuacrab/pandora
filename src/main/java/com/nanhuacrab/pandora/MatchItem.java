@@ -1,7 +1,5 @@
 package com.nanhuacrab.pandora;
 
-import java.util.Set;
-
 /**
  * 配置项
  */
@@ -15,5 +13,5 @@ public interface MatchItem {
 
   Box box();
 
-  Set<String> keys();
+  String[] keys();
 }
