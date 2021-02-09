@@ -1,10 +1,6 @@
 package com.nanhuacrab.pandora;
 
-/**
- * 维度
- */
-public interface Dimension {
-
+public interface DimensionDTO {
   int id();
 
   String code();
@@ -14,6 +10,4 @@ public interface Dimension {
   boolean nullable();
 
   int sequence();
-
-  Box box();
 }

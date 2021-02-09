@@ -1,27 +1,19 @@
 package com.nanhuacrab.pandora;
 
+import java.util.Set;
+
 /**
  * 配置项
- * */
-public class MatchItem {
-  private int id;
-  private String description;
-  private DimensionValue[] dimensionValue;
-  private String configuration;
+ */
+public interface MatchItem {
 
-  public int id() {
-    return this.id;
-  }
+  int id();
 
-  public String description() {
-    return this.description;
-  }
+  String description();
 
-  public DimensionValue[] dimensionValue(){
-    return this.dimensionValue;
-  }
+  String configuration();
 
-  public String configuration(){
-    return this.configuration;
-  }
+  Box box();
+
+  Set<String> keys();
 }
