@@ -7,7 +7,7 @@ public interface MatchItem {
 
   String configuration();
 
-  Box box();
+  DefaultBox box();
 
   String[] keys();
 

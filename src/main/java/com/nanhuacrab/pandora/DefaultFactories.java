@@ -9,7 +9,7 @@ public abstract class DefaultFactories implements Factories {
 
   private CubeMatries cubeMatries = new CubeMatries();
   private KeyMatries keyMatries = new KeyMatries();
-  private Map<String, Box> boxes = Maps.newHashMap();
+  private Map<String, DefaultBox> boxes = Maps.newHashMap();
 
   @Override
   public CubeMatrix cubeMatrix(int dimensionSize) {
@@ -22,8 +22,8 @@ public abstract class DefaultFactories implements Factories {
   }
 
   @Override
-  public Box box(String code) {
-    Box box = this.boxes.get(code);
+  public DefaultBox box(String code) {
+    DefaultBox box = this.boxes.get(code);
     if (Objects.isNull(box)) {
       box = this.createBox(code);
       this.boxes.put(code, box);
@@ -31,5 +31,5 @@ public abstract class DefaultFactories implements Factories {
     return box;
   }
 
-  protected abstract Box createBox(String code);
+  protected abstract DefaultBox createBox(String code);
 }

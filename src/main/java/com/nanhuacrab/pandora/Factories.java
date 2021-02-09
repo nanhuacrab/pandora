@@ -6,5 +6,5 @@ public interface Factories {
 
   KeyMatrix keyMatrix(int[] dimensionsSize);
 
-  Box box(String code);
+  DefaultBox box(String code);
 }

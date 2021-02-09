@@ -31,7 +31,7 @@ public class CubeMatrix {
   }
 
   String[] generateKeys(String[] dimensionValues) {
-    return this.generateKeys(dimensionValues, Box.SEPARATOR);
+    return this.generateKeys(dimensionValues, DefaultBox.SEPARATOR);
   }
 
   String[] generateKeys(String[] dimensionValues, String separator) {

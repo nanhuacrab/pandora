@@ -1,12 +1,25 @@
 package com.nanhuacrab.pandora;
 
-public class Box4Test implements BoxDTO {
+public class DefaultBoxDTO implements BoxDTO {
 
-  private DimensionDTO4Test[] dimensions;
-  private MatchItemDTO4Test[] matchItems;
+  private DefaultDimensionDTO[] dimensions;
+  private DefaultMatchItemDTO[] matchItems;
   private String code;
   private String description;
   private String separator;
+
+  private DefaultBoxDTO() {
+
+  }
+
+  public DefaultBoxDTO(String code, String separator, String description, DefaultDimensionDTO[] dimensions,
+      DefaultMatchItemDTO[] matchItems) {
+    this.code = code;
+    this.separator = separator;
+    this.description = description;
+    this.dimensions = dimensions;
+    this.matchItems = matchItems;
+  }
 
   @Override
   public String code() {

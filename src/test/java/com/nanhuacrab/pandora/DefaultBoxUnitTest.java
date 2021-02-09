@@ -11,10 +11,10 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Map;
 
-public class BoxUnitTest {
+public class DefaultBoxUnitTest {
 
   private static final class TestMatchConfiguration {
-    private Box4Test box;
+    private DefaultBoxDTO box;
     private TestMatchConfigurationTestCase[] testCases;
   }
 
@@ -35,11 +35,11 @@ public class BoxUnitTest {
     for (String c : configurations) {
 
       stream = this.getClass().getClassLoader().getResourceAsStream(c);
-      BoxUnitTest.TestMatchConfiguration configuration =
+      DefaultBoxUnitTest.TestMatchConfiguration configuration =
           gson.fromJson(CharStreams.toString(new InputStreamReader(stream, Charsets.UTF_8)),
-              BoxUnitTest.TestMatchConfiguration.class);
+              DefaultBoxUnitTest.TestMatchConfiguration.class);
 
-      Box box = new Box(configuration.box, factories);
+      DefaultBox box = new DefaultBox(configuration.box, factories);
       System.out
           .println(String.format("---------------- box: %s %s ---------------------", box.code(), box.description()));
 

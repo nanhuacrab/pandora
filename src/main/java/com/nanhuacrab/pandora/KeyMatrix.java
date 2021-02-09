@@ -98,7 +98,7 @@ public class KeyMatrix {
   }
 
   public String[] keys(Set<String>[] dimensionsValues) {
-    return this.keys(Box.SEPARATOR, dimensionsValues);
+    return this.keys(DefaultBox.SEPARATOR, dimensionsValues);
   }
 
   public String[] keys(String separator, Set<String>[] dimensionsValues) {

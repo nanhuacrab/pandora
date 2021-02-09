@@ -1,9 +1,19 @@
 package com.nanhuacrab.pandora;
 
-public class DimensionDTO4Test implements DimensionDTO {
+public class DefaultDimensionDTO implements DimensionDTO {
   private String code;
   private String description;
   private boolean nullable;
+
+  private DefaultDimensionDTO() {
+
+  }
+
+  public DefaultDimensionDTO(String code, String description, boolean nullable) {
+    this.code = code;
+    this.description = description;
+    this.nullable = nullable;
+  }
 
   @Override
   public String code() {
