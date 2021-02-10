@@ -16,6 +16,10 @@ public class CubeMatries {
     this.loadDefaultCubeMatries();
   }
 
+  public int cubeMatrieSize() {
+    return this.cubeMatries.size();
+  }
+
   private void loadDefaultCubeMatries() {
     Gson gson = new Gson();
     for (int i = 1; i <= 6; i++) {

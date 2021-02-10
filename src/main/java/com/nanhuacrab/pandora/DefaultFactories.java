@@ -1,6 +1,8 @@
 package com.nanhuacrab.pandora;
 
 import com.google.common.collect.Maps;
+import com.nanhuacrab.pandora.metrics.DefaultMetrics;
+import com.nanhuacrab.pandora.metrics.Metrics;
 
 import java.util.Map;
 import java.util.Objects;
@@ -9,11 +11,17 @@ public abstract class DefaultFactories implements Factories {
 
   private CubeMatries cubeMatries = new CubeMatries();
   private KeyMatries keyMatries = new KeyMatries();
+  private Metrics metrics = new DefaultMetrics();
   private Map<String, DefaultBox> boxes = Maps.newHashMap();
 
   @Override
   public CubeMatrix cubeMatrix(int dimensionSize) {
     return this.cubeMatries.cubeMatrx(dimensionSize);
+  }
+
+  @Override
+  public Metrics metrics() {
+    return this.metrics;
   }
 
   @Override

@@ -1,5 +1,6 @@
 package com.nanhuacrab.pandora;
 
+import com.codahale.metrics.Timer;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.apache.commons.collections4.CollectionUtils;
@@ -7,6 +8,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -111,6 +113,7 @@ public class DefaultBox implements Box {
   private final BoxDTO data;
   private final String code;
   private final String separator;
+  private final Timer matchDurationTimer;
 
   public DefaultBox(BoxDTO box, Factories factories) {
 
@@ -151,6 +154,8 @@ public class DefaultBox implements Box {
         this.matchItemWithKeys.put(key, matchItem);
       }
     }
+
+    this.matchDurationTimer = this.factories.metrics().boxMatchDurationTimer(this);
   }
 
   @Override
@@ -168,6 +173,10 @@ public class DefaultBox implements Box {
     return this.data.description();
   }
 
+  public int matchItemKeySize() {
+    return this.matchItemWithKeys.size();
+  }
+
   @Override
   public Dimension[] dimensions() {
     return this.dimensionsAll;
@@ -178,9 +187,7 @@ public class DefaultBox implements Box {
     return this.matchItems;
   }
 
-  @Override
-  public MatchItem match(Map<String, String> dimensionValues) {
-
+  private MatchItem doMatch(Map<String, String> dimensionValues) {
     String prefix = StringUtils.EMPTY;
     for (Dimension dimension : this.dimensionsWithNotNull) {
       if (!dimensionValues.containsKey(dimension.code())) {
@@ -208,6 +215,17 @@ public class DefaultBox implements Box {
     }
 
     return null;
+  }
+
+  @Override
+  public MatchItem match(Map<String, String> dimensionValues) {
+    if (Objects.nonNull(this.matchDurationTimer)) {
+      try (final Timer.Context context = this.matchDurationTimer.time()) {
+        return this.doMatch(dimensionValues);
+      }
+    } else {
+      return this.doMatch(dimensionValues);
+    }
   }
 
   @Override
