@@ -7,18 +7,20 @@ public class DefaultBoxDTO implements BoxDTO {
   private String code;
   private String description;
   private String separator;
+  private String emptySymbol;
 
   private DefaultBoxDTO() {
 
   }
 
-  public DefaultBoxDTO(String code, String separator, String description, DefaultDimensionDTO[] dimensions,
-      DefaultMatchItemDTO[] matchItems) {
+  public DefaultBoxDTO(String code, String separator, String description, String emptySymbol, DefaultDimensionDTO[] dimensions,
+                       DefaultMatchItemDTO[] matchItems) {
     this.code = code;
     this.separator = separator;
     this.description = description;
     this.dimensions = dimensions;
     this.matchItems = matchItems;
+    this.emptySymbol = emptySymbol;
   }
 
   @Override
@@ -44,5 +46,10 @@ public class DefaultBoxDTO implements BoxDTO {
   @Override
   public String separator() {
     return this.separator;
+  }
+
+  @Override
+  public String emptySymbol() {
+    return this.emptySymbol;
   }
 }

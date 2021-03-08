@@ -7,9 +7,11 @@ public interface MatchItem {
 
   String configuration();
 
-  DefaultBox box();
+  Box box();
 
   String[] keys();
+
+  String[][] keyMatrix();
 
   MatchItemDTO data();
 }

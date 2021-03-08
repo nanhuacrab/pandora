@@ -4,6 +4,7 @@ import com.codahale.metrics.Timer;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
@@ -53,6 +54,7 @@ public class DefaultBox implements Box {
     // private final DimensionValue[] dimensionValue;
     private final String configuration;
     private final String[] keys;
+    private final String[][] keyMatrix;
     private final DefaultBox ownerBox;
     private final MatchItemDTO data;
 
@@ -75,7 +77,9 @@ public class DefaultBox implements Box {
           dimensionsSize[i] = dimensionValues.size();
         }
       }
-      this.keys = this.ownerBox.factories.keyMatrix(dimensionsSize).keys(this.ownerBox.separator, dimensionsValues);
+      KeyMatrix keyMatrix = this.ownerBox.factories.keyMatrix(dimensionsSize);
+      this.keys = keyMatrix.keys(this.ownerBox.separator, dimensionsValues);
+      this.keyMatrix = keyMatrix.keyMatrix(dimensionsValues);
     }
 
     @Override
@@ -84,13 +88,18 @@ public class DefaultBox implements Box {
     }
 
     @Override
-    public DefaultBox box() {
+    public Box box() {
       return this.ownerBox;
     }
 
     @Override
     public String[] keys() {
       return this.keys;
+    }
+
+    @Override
+    public String[][] keyMatrix() {
+      return this.keyMatrix;
     }
 
     @Override
@@ -114,6 +123,7 @@ public class DefaultBox implements Box {
   private final String code;
   private final String separator;
   private final Timer matchDurationTimer;
+  private final String emptySymbol;
 
   public DefaultBox(BoxDTO box, Factories factories) {
 
@@ -121,6 +131,7 @@ public class DefaultBox implements Box {
     this.data = box;
     this.code = box.code();
     this.separator = box.separator();
+    this.emptySymbol = ObjectUtils.defaultIfNull(box.emptySymbol(), StringUtils.EMPTY);
 
     int dimensionsSize = box.dimensions().length;
     List<Dimension> dimensionsWithNullable = Lists.newArrayListWithCapacity(dimensionsSize);
@@ -156,6 +167,11 @@ public class DefaultBox implements Box {
     }
 
     this.matchDurationTimer = this.factories.metrics().boxMatchDurationTimer(this);
+  }
+
+  @Override
+  public String emptySymbol() {
+    return this.emptySymbol;
   }
 
   @Override

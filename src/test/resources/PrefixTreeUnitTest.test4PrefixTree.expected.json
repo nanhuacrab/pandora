@@ -1,0 +1,102 @@
+{
+  "children": {
+    "上海": {
+      "children": {
+        "滴滴": {
+          "children": {},
+          "wildcardNode": {
+            "children": {},
+            "deep": 3,
+            "maxMatchCount": 2,
+            "path": "ROOT->上海->滴滴->"
+          },
+          "deep": 2,
+          "maxMatchCount": 2,
+          "path": "ROOT->上海->滴滴"
+        }
+      },
+      "wildcardNode": {
+        "children": {
+          "经济型": {
+            "children": {},
+            "deep": 3,
+            "maxMatchCount": 2,
+            "path": "ROOT->上海->->经济型"
+          }
+        },
+        "wildcardNode": {
+          "children": {},
+          "deep": 3,
+          "maxMatchCount": 1,
+          "path": "ROOT->上海->->"
+        },
+        "deep": 2,
+        "maxMatchCount": 2,
+        "path": "ROOT->上海->"
+      },
+      "deep": 1,
+      "maxMatchCount": 2,
+      "path": "ROOT->上海"
+    },
+    "北京": {
+      "children": {
+        "滴滴": {
+          "children": {
+            "经济型": {
+              "children": {},
+              "deep": 3,
+              "maxMatchCount": 3,
+              "path": "ROOT->北京->滴滴->经济型"
+            },
+            "豪华型": {
+              "children": {},
+              "deep": 3,
+              "maxMatchCount": 3,
+              "path": "ROOT->北京->滴滴->豪华型"
+            }
+          },
+          "deep": 2,
+          "maxMatchCount": 3,
+          "path": "ROOT->北京->滴滴"
+        }
+      },
+      "wildcardNode": {
+        "children": {},
+        "wildcardNode": {
+          "children": {},
+          "deep": 3,
+          "maxMatchCount": 1,
+          "path": "ROOT->北京->->"
+        },
+        "deep": 2,
+        "maxMatchCount": 1,
+        "path": "ROOT->北京->"
+      },
+      "deep": 1,
+      "maxMatchCount": 3,
+      "path": "ROOT->北京"
+    }
+  },
+  "wildcardNode": {
+    "children": {
+      "滴滴": {
+        "children": {},
+        "wildcardNode": {
+          "children": {},
+          "deep": 3,
+          "maxMatchCount": 1,
+          "path": "ROOT->->滴滴->"
+        },
+        "deep": 2,
+        "maxMatchCount": 1,
+        "path": "ROOT->->滴滴"
+      }
+    },
+    "deep": 1,
+    "maxMatchCount": 1,
+    "path": "ROOT->"
+  },
+  "deep": 0,
+  "maxMatchCount": 0,
+  "path": "ROOT"
+}

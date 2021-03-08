@@ -1,0 +1,92 @@
+{
+  "dimensions": [
+    {
+      "code": "city",
+      "description": "城市",
+      "nullable": true
+    },
+    {
+      "code": "vendor",
+      "description": "供应商",
+      "nullable": true
+    },
+    {
+      "code": "vehicle",
+      "description": "车型",
+      "nullable": true
+    }
+  ],
+  "matchItems": [
+    {
+      "description": "上海-滴滴-配置",
+      "dimensionValue": {
+        "city": [
+          "上海"
+        ],
+        "vendor": [
+          "滴滴"
+        ]
+      },
+      "configuration": "上海-滴滴-配置"
+    },
+    {
+      "description": "上海-经济型-配置",
+      "dimensionValue": {
+        "city": [
+          "上海"
+        ],
+        "vehicle": [
+          "经济型"
+        ]
+      },
+      "configuration": "上海-经济型-配置"
+    },
+    {
+      "description": "上海-配置",
+      "dimensionValue": {
+        "city": [
+          "上海"
+        ]
+      },
+      "configuration": "上海-配置"
+    },
+    {
+      "description": "北京-滴滴-经济型/豪华型-配置",
+      "dimensionValue": {
+        "city": [
+          "北京"
+        ],
+        "vendor": [
+          "滴滴"
+        ],
+        "vehicle": [
+          "经济型",
+          "豪华型"
+        ]
+      },
+      "configuration": "北京-滴滴-经济型/豪华型-配置"
+    },
+    {
+      "description": "北京-配置",
+      "dimensionValue": {
+        "city": [
+          "北京"
+        ]
+      },
+      "configuration": "北京-配置"
+    },
+    {
+      "description": "滴滴-配置",
+      "dimensionValue": {
+        "vendor": [
+          "滴滴"
+        ]
+      },
+      "configuration": "滴滴-配置"
+    }
+  ],
+  "code": "test",
+  "description": "",
+  "separator": ",",
+  "emptySymbol": ""
+}

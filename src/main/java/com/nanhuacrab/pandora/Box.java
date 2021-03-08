@@ -17,6 +17,8 @@ public interface Box {
    */
   String description();
 
+  String emptySymbol();
+
   /**
    * 维度
    */

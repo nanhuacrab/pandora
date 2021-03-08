@@ -11,4 +11,6 @@ public interface BoxDTO {
   MatchItemDTO[] matchItems();
 
   String separator();
+
+  String emptySymbol();
 }

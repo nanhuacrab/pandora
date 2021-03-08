@@ -93,7 +93,7 @@ public class KeyMatrix {
     return this.symbols;
   }
 
-  String[][] matrix() {
+  public String[][] matrix() {
     return this.matrix;
   }
 
@@ -101,31 +101,57 @@ public class KeyMatrix {
     return this.keys(DefaultBox.SEPARATOR, dimensionsValues);
   }
 
+  private Map<String, String> symbolWithDimensionValues(Set<String>[] dimensionsValues){
+
+    Map<String, String> symbolWithDimensionValues = Maps.newHashMap();
+    int symbolIndex = 0;
+    for (int i = 0; i < dimensionsValues.length; i++) {
+      if (CollectionUtils.isEmpty(dimensionsValues[i])) {
+        symbolWithDimensionValues.put(this.symbols[symbolIndex++], StringUtils.EMPTY);
+        continue;
+      }
+      for (String dimensionsValue : dimensionsValues[i]) {
+        symbolWithDimensionValues.put(this.symbols[symbolIndex++],
+                ObjectUtils.defaultIfNull(dimensionsValue, StringUtils.EMPTY));
+      }
+    }
+
+    return symbolWithDimensionValues;
+  }
+
+  private static final String[][] EMPTH_KEY_MATRIX = new String[0][0];
+  public String[][] keyMatrix(Set<String>[] dimensionsValues) {
+    if (dimensionsValues.length != this.dimensionSize) {
+      return EMPTH_KEY_MATRIX;
+    }
+
+    Map<String, String> symbolWithDimensionValues = this.symbolWithDimensionValues(dimensionsValues);
+
+    String[][] keyMatrix = new String[this.matrix.length][this.dimensionSize];
+
+    for (int i = 0; i < this.matrix.length; i++ ) {
+      for ( int j = 0; j < this.dimensionSize; j++) {
+        String symbol = this.matrix[i][j];
+        keyMatrix[i][j] = symbolWithDimensionValues.get(symbol);
+      }
+    }
+
+    return keyMatrix;
+  }
+
   public String[] keys(String separator, Set<String>[] dimensionsValues) {
     if (dimensionsValues.length != this.dimensionSize) {
       return ArrayUtils.EMPTY_STRING_ARRAY;
     }
 
-    String[] keys = new String[matrixSize];
+    Map<String, String> symbolWithDimensionValues = this.symbolWithDimensionValues(dimensionsValues);
 
-    Map<String, String> symbolWithdimensionValues = Maps.newHashMap();
-    int symbolIndex = 0;
-    for (int i = 0; i < dimensionsValues.length; i++) {
-      if (CollectionUtils.isEmpty(dimensionsValues[i])) {
-        symbolWithdimensionValues.put(this.symbols[symbolIndex++], StringUtils.EMPTY);
-        continue;
-      }
-      for (String dimensionsValue : dimensionsValues[i]) {
-        symbolWithdimensionValues.put(this.symbols[symbolIndex++],
-            ObjectUtils.defaultIfNull(dimensionsValue, StringUtils.EMPTY));
-      }
-    }
-
+    String[] keys = new String[this.matrixSize];
     int keyIndex = 0;
-    for (String[] symbols : matrix) {
+    for (String[] symbols : this.matrix) {
       String key = StringUtils.EMPTY;
       for (String symbol : symbols) {
-        key += symbolWithdimensionValues.get(symbol) + separator;
+        key += symbolWithDimensionValues.get(symbol) + separator;
       }
       keys[keyIndex++] = key;
     }
