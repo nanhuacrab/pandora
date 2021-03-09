@@ -1,0 +1,12 @@
+{
+  "description": "上海-滴滴-配置",
+  "dimensionValue": {
+    "city": [
+      "上海"
+    ],
+    "vendor": [
+      "滴滴"
+    ]
+  },
+  "configuration": "上海-滴滴-配置"
+}

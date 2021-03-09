@@ -1,4 +1,38 @@
 {
   "box": "PrefixTreeUnitTest.test4PrefixTree.box.json",
-  "expected": "PrefixTreeUnitTest.test4PrefixTree.expected.json"
+  "expected": "PrefixTreeUnitTest.test4PrefixTree.expected.json",
+  "dimensionValues": [
+    {
+      "dimensionValues": {
+        "city": "杭州",
+        "vendor": "首约",
+        "vehicle": "经济型"
+      },
+      "expected": "PrefixTreeUnitTest.test4PrefixTree.expected.杭州-首约-经济型.json"
+    },
+    {
+      "dimensionValues": {
+        "city": "杭州",
+        "vendor": "滴滴",
+        "vehicle": "经济型"
+      },
+      "expected": "PrefixTreeUnitTest.test4PrefixTree.expected.杭州-滴滴-经济型.json"
+    },
+    {
+      "dimensionValues": {
+        "city": "上海",
+        "vendor": "滴滴",
+        "vehicle": "商务型"
+      },
+      "expected": "PrefixTreeUnitTest.test4PrefixTree.expected.上海-滴滴-商务型.json"
+    },
+    {
+      "dimensionValues": {
+        "city": "北京",
+        "vendor": "滴滴",
+        "vehicle": "商务型"
+      },
+      "expected": "PrefixTreeUnitTest.test4PrefixTree.expected.北京-滴滴-商务型.json"
+    }
+  ]
 }

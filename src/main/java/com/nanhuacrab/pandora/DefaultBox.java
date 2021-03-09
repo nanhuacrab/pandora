@@ -203,6 +203,20 @@ public class DefaultBox implements Box {
     return this.matchItems;
   }
 
+  @Override
+  public String[] dimensionValues(Map<String, String> dimensionValues) {
+    String[] values = new String[this.dimensionsWithNullable.length];
+    for (int i = 0; i < this.dimensionsWithNullable.length; i++) {
+      Dimension dimension = this.dimensionsWithNullable[i];
+      if (!dimensionValues.containsKey(dimension.code())) {
+        return null;
+      }
+      values[i] = dimensionValues.get(dimension.code());
+    }
+
+    return values;
+  }
+
   private MatchItem doMatch(Map<String, String> dimensionValues) {
     String prefix = StringUtils.EMPTY;
     for (Dimension dimension : this.dimensionsWithNotNull) {
@@ -212,14 +226,7 @@ public class DefaultBox implements Box {
       prefix += dimensionValues.get(dimension.code()) + this.separator;
     }
 
-    String[] values = new String[this.dimensionsWithNullable.length];
-    for (int i = 0; i < this.dimensionsWithNullable.length; i++) {
-      Dimension dimension = this.dimensionsWithNullable[i];
-      if (!dimensionValues.containsKey(dimension.code())) {
-        return null;
-      }
-      values[i] = dimensionValues.get(dimension.code());
-    }
+    String[] values = this.dimensionValues(dimensionValues);
 
     String[] keys = this.cubeMatrix.generateKeys(values, this.separator);
 

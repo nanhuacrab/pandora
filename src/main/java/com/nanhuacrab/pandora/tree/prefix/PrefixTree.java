@@ -9,6 +9,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.Map;
 import java.util.Objects;
+import java.util.Stack;
 
 /**
  * 前缀数
@@ -38,8 +39,6 @@ public class PrefixTree {
       return true;
     }
 
-    private MatchItem matchItem; // 叶子节点对应的配置信息
-
     private Node() {
       this("ROOT", null);
     }
@@ -58,6 +57,11 @@ public class PrefixTree {
 
   private Node root;
   private final Box box;
+
+  /**
+   * 叶子节点对应的配置信息
+   */
+  private Map<Node, MatchItem> matchItems = Maps.newHashMap();
 
   public PrefixTree(Box box) {
     this.box = box;
@@ -98,12 +102,51 @@ public class PrefixTree {
           parent = nodes[i];
         }
 
+        this.matchItems.put(parent, matchItem);
+
         for (Node n : nodes) {
           n.maxMatchCount = Math.max(n.maxMatchCount, maxMatchCount);
         }
+
       }
     }
   }
 
+  public MatchItem match(Map<String, String> dimensionValues) {
+    String[] values = this.box.dimensionValues(dimensionValues);
+    int dimensionSize = this.box.dimensionSize();
+
+    Stack<Node>[] results = new Stack[dimensionSize + 1]; // 栈数组，[i] 表示 最大匹配i个维度值的 栈
+    for (int i = 0; i < results.length; i++) {
+      results[i] = new Stack();
+    }
+    results[dimensionSize].push(this.root); // 根，默认全部匹配
+
+    for (int i = dimensionSize; i >= 0; i--) {
+      Stack<Node> stack = results[i];
+
+      while (!stack.empty()) { // 弹栈
+        Node node = stack.pop();
+
+        if (node.leaf()) { // 如果是叶子节点，说明找到
+          return this.matchItems.get(node);
+        }
+
+        String dimensionValue = values[node.deep]; // 需要匹配的维度值
+        Node child = node.children.get(dimensionValue);
+
+        if (null != child) { // 精确匹配
+          results[child.maxMatchCount].push(child); // 压栈，最大匹配 maxMatchCount 个维度值的 栈
+        }
+
+        if (null != node.wildcardNode) { // 通配 匹配
+          results[node.wildcardNode.maxMatchCount].push(node.wildcardNode); // 压栈，最大匹配 maxMatchCount 个维度值的 栈
+        }
+
+      }
+    }
+
+    return null;
+  }
 
 }

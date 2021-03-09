@@ -46,4 +46,9 @@ public interface Box {
    * 检查是否有重复 key 的配置项
    */
   Map<String, List<MatchItem>> checkDuplicationMatchItems();
+
+  /**
+   * 按顺序返回 各维度 的维度值
+   */
+  String[] dimensionValues(Map<String, String> dimensionValues);
 }
